@@ -7,54 +7,30 @@
 
 import SwiftUI
 
-struct Response: Codable {
-    var results: [Result]
-}
-
-struct Result: Codable {
-    var trackId: Int
-    var trackName: String
-    var collectionName: String
-}
-
-
 struct ContentView: View {
+
+    @State private var name = ""
+    @State private var emailAdress = ""
     
-    @State private var results = [Result]()
-    
-    var body: some View {
-        List(results, id: \.trackId) { item in
-            VStack(alignment: .leading){
-                Text(item.trackName)
-                    .font(.headline)
-                
-                Text(item.collectionName)
-            }
-        }
-        .task{
-            await loadData()
-        }
+    var disabledForm: Bool {
+        name.count < 3 || emailAdress.count < 5
     }
     
-    func loadData() async { // executa em segundo plano
-        guard let url = URL(string: "https://itunes.apple.com/search?term=billie+elish&entity=song") else {
-            print("Invalid URL")
-            return
+var body: some View {
+    Form{
+        Section{
+            TextField("Name", text: $name)
+            TextField("E-mail", text: $emailAdress)
         }
         
-        do{
-           let (data, _) = try await URLSession.shared.data(from: url)
-            
-            if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data){
-                results = decodedResponse.results
+        Section{
+            Button("Create acount") {
+                print("Creating...")
             }
-        } catch {
-            print("URL invalid")
-    
         }
-        
+        .disabled(disabledForm)
     }
-    
+    }
 }
 
 #Preview {
