@@ -10,7 +10,20 @@ import Foundation
 //class com os nosso pedido
 
 @Observable
-class Order {
+class Order: Codable {
+    enum CodingKeys: String, CodingKey {
+        case _type = "Type"
+        case _quantity = "quantity"
+        case _specialRequestEnabled = "specialRequestEnabled"
+        case _extraFrosting = "extraFrosting"
+        case _addSprinkles = "addSprinkles"
+        case _name = "name"
+        case _streetAddress = "streetAddress"
+        case _city = "city"
+        case _zip = "zip"
+        
+    }
+    
     static let types = ["Vanilla", "Strawberry", "Chocolate", "Rainbow"]
     
     var type = 0
@@ -61,5 +74,6 @@ class Order {
         
         return cost
     }
+    
     
 }
