@@ -19,7 +19,7 @@ struct CheckoutView: View {
     
     var body: some View {
         ScrollView {
-            VStack {
+            VStack(spacing: 20){
                 AsyncImage(url: URL(string: "https://hws.dev/img/cupcakes@3x.jpg"), scale: 3) { image in
                     image
                         .resizable()
@@ -27,7 +27,9 @@ struct CheckoutView: View {
                 } placeholder: {
                     ProgressView()
                 }
-                .frame(height: 233)
+                .frame(width: 332, height: 240)
+                .clipShape(RoundedRectangle(cornerRadius: 19))
+                .padding(.top, 50)
                 
                 Text("You total cost is \(order.cost, format: .currency(code: "USD"))")
                     .font(.title)
@@ -37,7 +39,12 @@ struct CheckoutView: View {
                         await placeOrder()
                     }
                 }
-                    .padding()
+                .frame(width: 332, height: 70)
+                .background(.cyan)
+                .font(.system(size: 20).bold())
+                .foregroundColor(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 18.0))
+                
             }
         }
         .navigationTitle("Check out")
