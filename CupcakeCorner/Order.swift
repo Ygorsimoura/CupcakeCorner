@@ -48,7 +48,7 @@ class Order: Codable {
     var zip = ""
     
     var hasValidAddress: Bool { //Verifica se existe algum conteudo em todo o nosso formulário
-        if name.isEmpty || streetAddress.isEmpty || city.isEmpty || zip.isEmpty {
+        if name.isEmpty || streetAddress.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || city.isEmpty || zip.isEmpty {
             return true
         }
         
