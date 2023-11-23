@@ -28,21 +28,34 @@ struct ContentView: View {
                 
                 Section{
                     Toggle("Any special requests?", isOn: $order.specialRequestEnabled.animation())
-                    
+                        .tint(.cyan)
                     if order.specialRequestEnabled {
                         Toggle("Add extra Frosting", isOn: $order.extraFrosting)
+                            .tint(.cyan)
                         
                         Toggle("Add extra sprinkles", isOn: $order.addSprinkles)
+                            .tint(.cyan)
                     }
                 }
                 
-                Section {
-                    NavigationLink("Delivery details") {
-                        AddressView(order: order)  
-                    }
-                }
+                
             }
-            .navigationTitle("Cupcake Corner")
+            .padding(.top, 30)
+            .navigationTitle("Cupcake Corner 🧁")
+            
+           
+            HStack {
+                NavigationLink("Delivery details") {
+                        AddressView(order: order)
+                }
+                .frame(width: 332, height: 70)
+                .background(.cyan)
+                .font(.system(size: 20).bold())
+                .foregroundColor(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 18.0))
+            }
+            .padding(.bottom, 30)
+            
         }
     }
 }
