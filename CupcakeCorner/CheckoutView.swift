@@ -14,6 +14,9 @@ struct CheckoutView: View {
     @State private var confirmationMessage = ""
     @State private var showingConfirmation = false
     
+    @State private var connectionErrorMessage = ""
+    @State private var showingConnectionError = false
+    
     var body: some View {
         ScrollView {
             VStack {
@@ -45,6 +48,11 @@ struct CheckoutView: View {
         } message: {
             Text(confirmationMessage)
         }
+        .alert("Error!", isPresented: $showingConnectionError) {
+            Button("OK") { }
+        } message: {
+            Text(connectionErrorMessage)
+        }
     }
     
     func placeOrder() async {  // função assincrona pois pode precisar de carregamento e o app nao pode parar
@@ -58,15 +66,18 @@ struct CheckoutView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
         
+         
         do {
             let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
             
             let decodedOrder = try JSONDecoder().decode(Order.self, from: data)
-            confirmationMessage = "You order for \(decodedOrder.quantity)x\(Order.types[decodedOrder.type].lowercased()) cupcakes is on the way!"
+            confirmationMessage = "You order for \(decodedOrder.quantity) x \(Order.types[decodedOrder.type].lowercased()) cupcakes is on the way!"
             
             showingConfirmation = true
             
         } catch {
+            connectionErrorMessage = "Connection Error, plase, check your connection and try again!"
+            showingConnectionError = true
             print("Check out Falied: \(error.localizedDescription)")
         }
         
